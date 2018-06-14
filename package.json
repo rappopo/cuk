@@ -1,0 +1,20 @@
+{
+  "name": "@rappopo/cuk",
+  "version": "0.0.3",
+  "description": "Core loaders, libraries & function helpers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ardhi Lukianto <ardhi@lukianto.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "debug": "^3.1.0",
+    "fs-extra": "^6.0.1",
+    "globby": "^8.0.1",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
+    "nanoid": "^1.0.3"
+  }
+}
