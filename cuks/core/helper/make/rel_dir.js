@@ -1,10 +1,10 @@
 'use strict'
 
 module.exports = function(cuk) {
-  return (dir, root, replacer = '.') => {
-    root = root || cuk.dir.root
+  return (dir, app, replacer = '.') => {
+    app = app || cuk.dir.app
     dir = dir || ''
-    let d = dir.replace(root, replacer)
+    let d = dir.replace(app, replacer)
     return d
   }
 }

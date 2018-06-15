@@ -6,11 +6,11 @@ module.exports = function(cuk) {
 
   return {
     boot: (options) => {
-      let { pkgId, name, action, createRootDir = true, createContainer = true, rootAction, deep = true } = options
+      let { pkgId, name, action, createAppDir = true, createContainer = true, parentAction, deep = true } = options
       let ns = !!name ? `${pkgId}/${name}` : pkgId
       if (!name) createContainer = false
-      if (createRootDir)
-        fs.ensureDirSync(path.join(cuk.dir.root, 'cuks', ns))
+      if (createAppDir)
+        fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
 
       _.forOwn(cuk.pkg, (p, k) => {
         if (createContainer) {
@@ -18,14 +18,14 @@ module.exports = function(cuk) {
         }
 
         let dir = path.join(p.dir, 'cuks', ns)
-        const pattern = deep ? '/**' : '/*'
+        const pattern = deep ? '/**' : ''
         var files = globby.sync(`${dir}${pattern}/*.js`, {
           ignore: [`${dir}${pattern}/_*.js`]
         })
 
         if (files.length > 0) {
-          if (_.isFunction(rootAction)) {
-            rootAction({
+          if (_.isFunction(parentAction)) {
+            parentAction({
               pkg: p,
               dir: dir,
               files: files,

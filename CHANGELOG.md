@@ -5,7 +5,7 @@
 - Deprecate cuk-func and port it to core
 - Add README.md, LICENSE.md, CHANGELOG.md
 - Ensure ./cuks/core/func exists in user project folder
-- Root package's functions can be called without to put root namespace
+- App package's functions can be called without to put app namespace
 
 ### 0.0.3
 
