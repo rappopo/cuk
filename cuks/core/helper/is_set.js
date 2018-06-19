@@ -2,6 +2,7 @@
 
 module.exports = function(cuk) {
   return (value) => {
-    return [null, undefined].indexOf(value) === -1
+    const result = [null, undefined].indexOf(value) === -1
+    return result
   }
 }
