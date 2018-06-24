@@ -31,7 +31,7 @@ debug.formatters.F = text => {
 }
 
 debug.formatters.G = text => {
-  return text || '│  │     │ '
+  return text || '│  │  │     ├─'
 }
 
 debug.formatters.K = text => {

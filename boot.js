@@ -89,7 +89,7 @@ module.exports = function(options) {
         cuk.pkg[p.id].cfg = cfg
       })
       let cores = _.orderBy(_.filter(cuk.pkg, f => {
-        return fs.existsSync(path.join(f.dir, 'boot.js')) && f.id !== 'core'
+        return (fs.existsSync(path.join(f.dir, 'boot.js')) || fs.existsSync(path.join(f.dir, 'boot', 'index.js'))) && f.id !== 'core'
       }), ['level'], ['asc'])
       if (cores.length === 0) return Promise.resolve(true)
       let order = _.without(_.get(cuk.pkg.core, 'cfg.common.bootOrder', []), 'app')

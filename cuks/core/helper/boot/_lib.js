@@ -9,7 +9,7 @@ module.exports = function(cuk) {
     let hooks = []
     _.forOwn(cuk.pkg, (p, k) => {
       const dir = path.join(p.dir, 'cuks', ns)
-      const pattern = `${dir}/_hook/*`
+      const pattern = `${dir}/hook/*`
       const files = globby.sync(`${pattern}/*.js`, {
         ignore: [
           `${pattern}/_*`,
@@ -61,6 +61,7 @@ module.exports = function(cuk) {
         const ignore = [
           `${dir}${pattern}/_*.js`,
           `${dir}/_*/**/*`,
+          `${dir}/hook/**/*`,
         ]
         const files = globby.sync(`${dir}${pattern}/*.js`, {
           ignore: ignore
@@ -79,11 +80,11 @@ module.exports = function(cuk) {
             const key = _.camelCase(f.replace(dir, '').replace('.js', ''))
             hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
             if (hook.length > 0) {
-              trace('%D hook:before')
+              trace('%E hook:before', null)
               _.each(hook, h => {
-                let text = '%F %s'
+                let text = '%G %s'
                 let result = require(h.file)(cuk)()
-                if (result) text += ': ' + result
+                if (result) text += ' ⇒ ' + result
                 trace(text, null, h.from)
               })
             }
@@ -99,11 +100,11 @@ module.exports = function(cuk) {
             }
             hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'after' })
             if (hook.length > 0) {
-              trace('%D hook:after')
+              trace('%E hook:after', null)
               _.each(hook, h => {
-                let text = '%F %s'
+                let text = '%G %s'
                 let result = require(h.file)(cuk)()
-                if (result) text += ': ' + result
+                if (result) text += ' ⇒ ' + result
                 trace(text, null, h.from)
               })
             }
