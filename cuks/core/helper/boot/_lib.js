@@ -4,6 +4,7 @@ module.exports = function(cuk) {
   const { _, globby, path, fs } = cuk.lib
   const merge = require('../merge')(cuk)
   const trace = require('./trace')(cuk)
+  const makeChoices = require('../make/choices')(cuk)
 
   const getHooks = (ns) => {
     let hooks = []
@@ -30,97 +31,108 @@ module.exports = function(cuk) {
     return hooks
   }
 
-  return {
-    boot: (options) => {
-      let { pkgId, name, action, createAppDir = true, createContainer = true, parentAction, deep = true } = options
-      let ns = !!name ? `${pkgId}/${name}` : pkgId
-      if (!name) createContainer = false
-      if (createAppDir)
-        fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
+  return (options) => {
+    let { pkgId,
+      name,
+      action,
+      createAppDir = true,
+      createContainer = true,
+      parentAction,
+      deep = true,
+      ext = '.js'
+    } = options
+    const exts = makeChoices(ext)
+    let ns = !!name ? `${pkgId}/${name}` : pkgId
+    if (!name) createContainer = false
+    if (createAppDir)
+      fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
 
-      const hooks = getHooks(ns)
-      let hook = _.filter(hooks, { pkgId: 'parent', type: 'before' })
-      if (hook.length > 0) {
-        trace('%D parentHook:before')
-        _.each(hook, h => {
-          let text = '%F %s'
-          let result = require(h.file)(cuk)()
-          if (result) text += ': ' + result
-          trace(text, null, h.from)
-        })
+    const hooks = getHooks(ns)
+    let hook = _.filter(hooks, { pkgId: 'parent', type: 'before' })
+    if (hook.length > 0) {
+      trace('%D parentHook:before')
+      _.each(hook, h => {
+        let text = '%F %s'
+        let result = require(h.file)(cuk)()
+        if (result) text += ': ' + result
+        trace(text, null, h.from)
+      })
+    }
+
+    _.forOwn(cuk.pkg, (p, k) => {
+      if (createContainer) {
+        p.cuks[pkgId] = merge(p.cuks[pkgId], _.set({}, name, {}))
       }
 
-      _.forOwn(cuk.pkg, (p, k) => {
-        if (createContainer) {
-          p.cuks[pkgId] = merge(p.cuks[pkgId], _.set({}, name, {}))
-        }
+      let dir = path.join(p.dir, 'cuks', ns)
 
-        let dir = path.join(p.dir, 'cuks', ns)
+      const pattern = deep ? '/**' : ''
+      let ignore = [
+        `${dir}/_*/**/*`,
+        `${dir}/hook/**/*`,
+      ], patterns = []
+      _.each(exts, ext => {
+        ignore.push(`${dir}${pattern}/_*${ext}`)
+        patterns.push(`${dir}${pattern}/*${ext}`)
+      })
 
-        const pattern = deep ? '/**' : ''
-        const ignore = [
-          `${dir}${pattern}/_*.js`,
-          `${dir}/_*/**/*`,
-          `${dir}/hook/**/*`,
-        ]
-        const files = globby.sync(`${dir}${pattern}/*.js`, {
-          ignore: ignore
-        })
+      const files = globby.sync(patterns, {
+        ignore: ignore
+      })
 
-        if (files.length > 0) {
-          if (_.isFunction(parentAction)) {
-            parentAction({
-              pkg: p,
-              dir: dir,
-              files: files,
-              name: name
-            })
-          }
-          _.each(files, f => {
-            const key = _.camelCase(f.replace(dir, '').replace('.js', ''))
-            hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
-            if (hook.length > 0) {
-              trace('%E hook:before', null)
-              _.each(hook, h => {
-                let text = '%G %s'
-                let result = require(h.file)(cuk)()
-                if (result) text += ' ⇒ ' + result
-                trace(text, null, h.from)
-              })
-            }
-            if (_.isFunction(action)) {
-              action({
-                pkg: p,
-                dir: dir,
-                file: f,
-                name: name,
-                key: key,
-                value: require(f)(cuk)
-              })
-            }
-            hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'after' })
-            if (hook.length > 0) {
-              trace('%E hook:after', null)
-              _.each(hook, h => {
-                let text = '%G %s'
-                let result = require(h.file)(cuk)()
-                if (result) text += ' ⇒ ' + result
-                trace(text, null, h.from)
-              })
-            }
+      if (files.length > 0) {
+        if (_.isFunction(parentAction)) {
+          parentAction({
+            pkg: p,
+            dir: dir,
+            files: files,
+            name: name
           })
         }
-      })
-      hook = _.filter(hooks, { pkgId: 'parent', type: 'after' })
-      if (hook.length > 0) {
-        trace('%D parentHook:after')
-        _.each(hook, h => {
-          let text = '%F %s'
-          let result = require(h.file)(cuk)()
-          if (result) text += ': ' + result
-          trace(text, null, h.from)
+        _.each(files, f => {
+          const ext = path.extname(f),
+            key = _.camelCase(f.replace(dir, '').replace(ext, ''))
+          hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
+          if (hook.length > 0) {
+            trace('%E hook:before', null)
+            _.each(hook, h => {
+              let text = '%G %s'
+              let result = require(h.file)(cuk)()
+              if (result) text += ' ⇒ ' + result
+              trace(text, null, h.from)
+            })
+          }
+          if (_.isFunction(action)) {
+            action({
+              pkg: p,
+              dir: dir,
+              file: f,
+              name: name,
+              key: key
+            })
+          }
+          hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'after' })
+          if (hook.length > 0) {
+            trace('%E hook:after', null)
+            _.each(hook, h => {
+              let text = '%G %s'
+              let result = require(h.file)(cuk)()
+              if (result) text += ' ⇒ ' + result
+              trace(text, null, h.from)
+            })
+          }
         })
       }
+    })
+    hook = _.filter(hooks, { pkgId: 'parent', type: 'after' })
+    if (hook.length > 0) {
+      trace('%D parentHook:after')
+      _.each(hook, h => {
+        let text = '%F %s'
+        let result = require(h.file)(cuk)()
+        if (result) text += ': ' + result
+        trace(text, null, h.from)
+      })
     }
   }
 }

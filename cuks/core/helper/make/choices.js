@@ -2,7 +2,7 @@
 
 module.exports = function(cuk) {
   const { _ } = cuk.lib
-  const isSet = require('../is_set')(cuk)
+  const isSet = require('../is/set')(cuk)
 
   return (item, sep = ',', formatter) => {
     if (!isSet(item)) return []
