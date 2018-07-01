@@ -63,43 +63,13 @@ module.exports = function(options) {
     })
     Promise.all(proms)
     .then(() => {
-      trace('%Z Loading function helpers...', null)
-      return require('./lib/make_helper')(cuk, trace)
+      return require('./lib/load_helper')(cuk, trace)
     })
     .then(() => {
-      helper = cuk.lib.helper
-      trace('%Z Loading configurations...', null)
-      return Promise.map(helper('core:pkgs')(), p => {
-        return helper('core:loadConfig')(p.dir, 'config')
-      })
+      return require('./lib/load_config')(cuk, trace)
     })
-    .then(result => {
-      defCfg = result
-      return Promise.map(helper('core:pkgs')(), p => {
-        let d = path.join(cuk.dir.data, 'config')
-        return helper('core:loadConfig')(d, p.id)
-      })
-    })
-    .then(result => {
-      _.each(helper('core:pkgs')(), (p, i) => {
-        let cfg = helper('core:merge')(defCfg[i], result[i])
-        cfg.common = cfg.common || {}
-        cfg.common.mount = cfg.common.mount || ('/' + p.id)
-        cfg.cuks = cfg.cuks || {}
-        cuk.pkg[p.id].cfg = cfg
-      })
-      let cores = _.orderBy(_.filter(cuk.pkg, f => {
-        return (fs.existsSync(path.join(f.dir, 'boot.js')) || fs.existsSync(path.join(f.dir, 'boot', 'index.js'))) && f.id !== 'core'
-      }), ['level'], ['asc'])
-      if (cores.length === 0) return Promise.resolve(true)
-      let order = _.without(_.get(cuk.pkg.core, 'cfg.common.bootOrder', []), 'app')
-      if (order.length > 0) {
-        cores = _.concat(cuk.pkg.app, sortCollection(cores, order))
-      }
-      trace('%Z Trying to boot these packages: %s', null, _.map(cores, 'id').join(', '))
-      return Promise.mapSeries(cores, c => {
-        return bootPkg(cuk)(c)
-      })
+    .then(() => {
+      return require('./lib/boot_pkg')(cuk, trace)
     })
     .then(() => {
       trace('╘═ Boot process completed, enjoy!')
