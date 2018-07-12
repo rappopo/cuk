@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { _, moment, helper } = cuk.lib
+  const { _, moment, helper } = cuk.pkg.core.lib
 
   return (unit, asSecond = false, asDuration = false) => {
     if (_.isNumber(unit)) return unit

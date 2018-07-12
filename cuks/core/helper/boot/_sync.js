@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { _, globby, path, fs } = cuk.lib
+  const { _, globby, path, fs } = cuk.pkg.core.lib
   const merge = require('../merge')(cuk)
   const trace = require('./trace')(cuk)
   const makeChoices = require('../make/choices')(cuk)

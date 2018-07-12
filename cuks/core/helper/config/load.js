@@ -1,9 +1,11 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { _, fs, path } = cuk.lib
+  const _ = require('lodash')
+  const fs = require('fs-extra')
+  const path = require('path')
 
-  return (dir, file) => {
+  return (dir, file = 'config') => {
     if (fs.existsSync(path.join(dir, `${file}.js`)))
       return require(path.join(dir, `${file}.js`))(cuk)
     if (fs.existsSync(path.join(dir, file, 'index.js')))

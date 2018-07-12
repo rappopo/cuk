@@ -26,14 +26,14 @@ A function helper needs to be written according to the following rules:
 - You can call those function helpers later from anywhere like this:
 
 ```js
-const { helper } = cuk.lib
+const { helper } = cuk.pkg.core.lib
 helper('<camelCasedName>')(<arguments>)
 ```
 
 To call a package helper from your project, prepend its name with **`<package-id>:`**, e.g.:
 
 ```js
-const { helper } = cuk.lib
+const { helper } = cuk.pkg.core.lib
 let merged = helper('core:merge')({}, { key: 'value' })
 ```
 
@@ -63,7 +63,7 @@ Save it, run your project. You can now call your helper like this:
 
 ```js
 ...
-const { helper } = cuk.lib
+const { helper } = cuk.pkg.core.lib
 helper('mySecretFunction')('Hello!')
 ...
 ```

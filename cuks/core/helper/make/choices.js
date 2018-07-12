@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { _ } = cuk.lib
+  const _ = require('lodash')
   const isSet = require('../is/set')(cuk)
 
   return (item, sep = ',', formatter) => {

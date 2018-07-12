@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { _ } = cuk.lib
+  const { _ } = cuk.pkg.core.lib
 
   return msg => {
     let param = _.isPlainObject(msg) ? msg : { msg: msg }

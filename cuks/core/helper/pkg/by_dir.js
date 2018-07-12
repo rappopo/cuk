@@ -1,10 +1,10 @@
 'use strict'
 
 module.exports = function(cuk) {
-  const { helper } = cuk.lib
+  const pkgs = require('../pkgs')(cuk)
 
   return (dir) => {
-    let pkgs = helper.getPkgs({ dir: dir })
-    return pkgs.length > 0 ? pkgs[0] : null
+    let results = pkgs({ dir: dir })
+    return results.length > 0 ? results[0] : null
   }
 }
