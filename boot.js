@@ -42,12 +42,12 @@ module.exports = function(options) {
       onlyDirectories: true,
       absolute: true
     })
-    trace('╒═ Starting...')
-    trace('%Z Loading core...', null)
+    trace('+= Starting...')
+    trace('|= Loading core...')
     makePkg(cuk, require('./index')(cuk), __dirname, trace)
     .then(pkg => {
       cuk.pkg[pkg.id] = pkg
-      trace('%Z Loading packages...', null)
+      trace('|= Loading packages...')
       let proms = [
         makePkg(cuk, Promise.resolve({ id: 'app', level: 0}), cuk.dir.app, trace)
       ]
@@ -70,7 +70,7 @@ module.exports = function(options) {
       return require('./lib/boot_pkg')(cuk, trace)
     })
     .then(() => {
-      trace('╘═ Boot process completed, enjoy!')
+      trace('-= Boot process completed, enjoy!')
       if (!process.env.NOBANNER) console.log(
 `
 ╔════════════════════════════════╦══════════════════════════════════════════════╗

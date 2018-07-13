@@ -50,9 +50,9 @@ module.exports = function(cuk) {
     const hooks = getHooks(ns)
     let hook = _.filter(hooks, { pkgId: 'parent', type: 'before' })
     if (hook.length > 0) {
-      trace('%D parentHook:before')
+      trace('|  |---> parentHook:before')
       _.each(hook, h => {
-        let text = '%F %s'
+        let text = '|  |     |- %s'
         let result = require(h.file)(cuk)()
         if (result) text += ': ' + result
         trace(text, null, h.from)
@@ -94,9 +94,9 @@ module.exports = function(cuk) {
             key = _.camelCase(f.replace(dir, '').replace(ext, ''))
           hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
           if (hook.length > 0) {
-            trace('%E hook:before', null)
+            trace('|  |  |---> hook:before', null)
             _.each(hook, h => {
-              let text = '%G %s'
+              let text = '|  |  |     |- %s'
               let result = require(h.file)(cuk)()
               if (result) text += ' ⇒ ' + result
               trace(text, null, h.from)
@@ -113,11 +113,11 @@ module.exports = function(cuk) {
           }
           hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'after' })
           if (hook.length > 0) {
-            trace('%E hook:after', null)
+            trace('|  |  |---> hook:after', null)
             _.each(hook, h => {
-              let text = '%G %s'
+              let text = '|  |  |     |- %s'
               let result = require(h.file)(cuk)()
-              if (result) text += ' ⇒ ' + result
+              if (result) text += ' => ' + result
               trace(text, null, h.from)
             })
           }
@@ -126,9 +126,9 @@ module.exports = function(cuk) {
     })
     hook = _.filter(hooks, { pkgId: 'parent', type: 'after' })
     if (hook.length > 0) {
-      trace('%D parentHook:after')
+      trace('|  |---> parentHook:after')
       _.each(hook, h => {
-        let text = '%F %s'
+        let text = '|  |     |- %s'
         let result = require(h.file)(cuk)()
         if (result) text += ': ' + result
         trace(text, null, h.from)
