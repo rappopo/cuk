@@ -13,7 +13,8 @@ module.exports = function(cuk) {
       fs: require('fs-extra'),
       globby: require('globby'),
       moment: require('moment'),
-      debug: require('debug')
+      debug: require('debug'),
+      deleteEmpty: require('delete-empty')
     }
   })
 }

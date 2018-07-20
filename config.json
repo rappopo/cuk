@@ -1,5 +1,13 @@
 {
   "common": {
     "bootOrder": []
+  },
+  "cuks": {
+    "task": {
+      "clearTmpDir": {
+        "maxAge": "1h",
+        "exclude": []
+      }
+    }
   }
 }

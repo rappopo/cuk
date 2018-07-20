@@ -4,7 +4,7 @@ module.exports = function(cuk) {
   const { _, moment, helper } = cuk.pkg.core.lib
 
   return (unit, asSecond = false, asDuration = false) => {
-    if (_.isNumber(unit)) return unit
+    if (_.isNumber(unit)) return asSecond ? (unit/60) : unit
     if (!_.isString(unit)) throw helper('core:makeError')('Only accept number or string')
     let supported = ('y,M,w,d,h,m,s,ms,q,years,months,weeks,days,hours,minutes,seconds,milliseconds,quarters,' +
       'year,month,week,day,hour,minute,second,millisecond,quarter').split(',')

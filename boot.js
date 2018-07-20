@@ -18,7 +18,7 @@ let cuk = {
 }
 
 module.exports = function(options) {
-  const trace = require('./cuks/core/helper/boot/trace')(cuk)
+  const trace = require('./cuks/core/helper/trace')(cuk)
   const merge = require('./cuks/core/helper/merge')(cuk)
   const sortCollection = require('./cuks/core/helper/coll/sort_by')(cuk)
   const bootPkg = require('./lib/boot_pkg')
