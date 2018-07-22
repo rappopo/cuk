@@ -7,6 +7,7 @@ const trace = debug('cuk')
 module.exports = function(cuk) {
   return (text, ...arg) => {
     text = text
+      .replace(/\+->/g, '┌▻')
       .replace(/-->/g, '──▻')
       .replace(/->/g, '→')
       .replace(/=>/g, '⇒')
