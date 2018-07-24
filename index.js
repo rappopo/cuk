@@ -14,7 +14,8 @@ module.exports = function(cuk) {
       globby: require('globby'),
       moment: require('moment'),
       debug: require('debug'),
-      deleteEmpty: require('delete-empty')
+      deleteEmpty: require('delete-empty'),
+      CukError: require('./lib/class_error')
     }
   })
 }

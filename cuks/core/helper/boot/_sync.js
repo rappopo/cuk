@@ -43,7 +43,7 @@ module.exports = function(cuk) {
     } = options
     const exts = makeChoices(ext)
     let ns = !!name ? `${pkgId}/${name}` : pkgId
-    if (!name) createContainer = false
+//    if (!name) createContainer = false
     if (createAppDir)
       fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
 
@@ -61,7 +61,7 @@ module.exports = function(cuk) {
 
     _.forOwn(cuk.pkg, (p, k) => {
       if (createContainer) {
-        p.cuks[pkgId] = merge(p.cuks[pkgId], _.set({}, name, {}))
+        p.cuks[pkgId] = name === '' ? {} : merge(p.cuks[pkgId], _.set({}, name, {}))
       }
 
       let dir = path.join(p.dir, 'cuks', ns)
