@@ -15,6 +15,7 @@ module.exports = function(cuk) {
       moment: require('moment'),
       debug: require('debug'),
       deleteEmpty: require('delete-empty'),
+      getParameterNames: require('@captemulation/get-parameter-names'),
       CukError: require('./lib/class_error')
     }
   })
