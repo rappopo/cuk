@@ -50,12 +50,12 @@ module.exports = function(cuk) {
     const hooks = getHooks(ns)
     let hook = _.filter(hooks, { pkgId: 'parent', type: 'before' })
     if (hook.length > 0) {
-      trace('|  |---> parentHook:before')
+      if (process.env.VERBOSE) trace('|  |---> parentHook:before')
       _.each(hook, h => {
         let text = '|  |     |- %s'
         let result = require(h.file)(cuk)()
         if (result) text += ': ' + result
-        trace(text, null, h.from)
+        if (process.env.VERBOSE) trace(text, h.from)
       })
     }
 
@@ -94,12 +94,12 @@ module.exports = function(cuk) {
             key = _.camelCase(f.replace(dir, '').replace(ext, ''))
           hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
           if (hook.length > 0) {
-            trace('|  |  |---> hook:before', null)
+            if (process.env.VERBOSE) trace('|  |  |---> hook:before')
             _.each(hook, h => {
               let text = '|  |  |     |- %s'
               let result = require(h.file)(cuk)()
               if (result) text += ' ⇒ ' + result
-              trace(text, null, h.from)
+              if (process.env.VERBOSE) trace(text, h.from)
             })
           }
           if (_.isFunction(action)) {
@@ -113,12 +113,12 @@ module.exports = function(cuk) {
           }
           hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'after' })
           if (hook.length > 0) {
-            trace('|  |  |---> hook:after', null)
+            if (process.env.VERBOSE) trace('|  |  |---> hook:after')
             _.each(hook, h => {
               let text = '|  |  |     |- %s'
               let result = require(h.file)(cuk)()
               if (result) text += ' => ' + result
-              trace(text, null, h.from)
+              if (process.env.VERBOSE) trace(text, h.from)
             })
           }
         })
@@ -126,12 +126,12 @@ module.exports = function(cuk) {
     })
     hook = _.filter(hooks, { pkgId: 'parent', type: 'after' })
     if (hook.length > 0) {
-      trace('|  |---> parentHook:after')
+      if (process.env.VERBOSE) trace('|  |---> parentHook:after')
       _.each(hook, h => {
         let text = '|  |     |- %s'
         let result = require(h.file)(cuk)()
         if (result) text += ': ' + result
-        trace(text, null, h.from)
+        if (process.env.VERBOSE) trace(text, h.from)
       })
     }
   }

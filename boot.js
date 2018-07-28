@@ -43,6 +43,7 @@ module.exports = function(options) {
       absolute: true
     })
     trace('+= Starting...')
+    if (!process.env.DEBUG) process.stdout.write('\n 🍎 Loading packages...')
     trace('|= Loading core...')
     makePkg(cuk, require('./index')(cuk), __dirname, trace)
     .then(pkg => {
@@ -67,20 +68,26 @@ module.exports = function(options) {
       return require('./lib/load_config')(cuk, trace)
     })
     .then(() => {
+      if (!process.env.DEBUG) process.stdout.write(' + 🐍 Booting packages...')
       return require('./lib/boot_pkg')(cuk, trace)
     })
     .then(() => {
-      trace('-= Boot process completed, enjoy!')
+      if (!process.env.DEBUG) process.stdout.write(' = 😈 Completed, enjoy!\n')
+      trace('-= Completed, enjoy!')
       if (!process.env.NOBANNER) console.log(
 `
-╔════════════════════════════════╦══════════════════════════════════════════════╗
-║   ██████╗██╗   ██╗██╗  ██╗██╗  ║  Rappopo CUK!                                ║
-║  ██╔════╝██║   ██║██║ ██╔╝██║  ║                                              ║
-║  ██║     ██║   ██║█████╔╝ ██║  ║  https://docs.rappopo.com/cuk                ║
-║  ██║     ██║   ██║██╔═██╗ ╚═╝  ║  https://github.com/rappopo/cuk              ║
-║  ╚██████╗╚██████╔╝██║  ██╗██╗  ║  https://www.npmjs.com/package/@rappopo/cuk  ║
-║   ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ║  Twitter: @rappopoto                         ║
-╚════════════════════════════════╩══════════════════════════════════════════════╝
+   .----.-----.-----.-----.
+  /      \\     \\     \\     \\
+  |   /   |     |   __L_____L__      #NjancukiHargaMati!
+  |  |    |     |  (           \\
+  |   \\___/    /    \\______/    |
+  |       \\___/\\___/\\___/       |
+  \\      \\       /             /
+   |                       __/
+    \\_                  __/
+     |       |         |             Documentation: https://docs.rappopo.com/cuk
+     |                 |             Project: https://github.com/rappopo/cuk
+     |   Rappopo CUK   |             Twitter: @rappopoto
 `)
       resolve(cuk)
     }).catch(reject)
