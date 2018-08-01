@@ -22,7 +22,6 @@ module.exports = function(options) {
   const merge = require('./cuks/core/helper/merge')(cuk)
   const sortCollection = require('./cuks/core/helper/coll/sort_by')(cuk)
   const bootPkg = require('./lib/boot_pkg')
-  let helper, defCfg
 
   return new Promise((resolve, reject) => {
     _.each(['config', 'tmp'], d => {
