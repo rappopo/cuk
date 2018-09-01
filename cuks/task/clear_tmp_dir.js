@@ -1,24 +1,26 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const { _, globby, path, fs, moment, helper, deleteEmpty } = cuk.pkg.core.lib
   const pkg = cuk.pkg.task
 
   return {
     time: '*/30 * * * *',
-    onTick: function() {
+    onTick: function () {
       this.locked = moment()
       const tmp = path.join(cuk.dir.data, 'tmp')
       const files = globby.sync(tmp, '**/*', {
         dot: true
       })
-      let success = 0, error = 0, skipped = 0, excluded = 0
+      let success = 0
+      let error = 0
+      let skipped = 0
+      // let excluded = 0
 
       let exclude = _.get(pkg.cfg, 'cuks.task.clearTmpDir.exclude', [])
       exclude.push('./dev.sock', './upload')
       _.each(exclude, (item, i) => {
-        if (!path.isAbsolute(item))
-          exclude[i] = path.join(cuk.dir.data, 'tmp', item)
+        if (!path.isAbsolute(item)) exclude[i] = path.join(cuk.dir.data, 'tmp', item)
       })
       let excludeDir = _.filter(exclude, item => {
         if (!fs.existsSync(item)) return false
@@ -31,18 +33,19 @@ module.exports = function(cuk) {
           skipped++
           return
         }
-        let stat = fs.statSync(f),
-          mtime = moment(stat.mtime),
-          maxAge = helper('core:parseUnitOfTime')(_.get(pkg.cfg, 'cuks.task.clearTmpDir.maxAge', 1000*60*60))
-        if (moment().diff(mtime) > maxAge)
+        let stat = fs.statSync(f)
+        let mtime = moment(stat.mtime)
+        let maxAge = helper('core:parseUnitOfTime')(_.get(pkg.cfg, 'cuks.task.clearTmpDir.maxAge', 1000 * 60 * 60))
+        if (moment().diff(mtime) > maxAge) {
           try {
             fs.unlinkSync(f)
             success++
-          } catch(e) {
+          } catch (e) {
             error++
           }
-        else
+        } else {
           skipped++
+        }
       })
       deleteEmpty(tmp)
       pkg.trace('%s » status: Success %d, Fail: %d, Skipped: %d', this.name, success, error, skipped)
@@ -51,5 +54,4 @@ module.exports = function(cuk) {
     timeout: 30,
     autoStart: true
   }
-
 }

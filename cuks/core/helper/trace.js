@@ -1,10 +1,9 @@
 'use strict'
 
 const debug = require('debug')
-const _ = require('lodash')
 const trace = debug('cuk')
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   return (text, ...arg) => {
     text = text
       .replace(/\+->/g, '┌▻')
@@ -12,7 +11,7 @@ module.exports = function(cuk) {
       .replace(/->/g, '→')
       .replace(/=>/g, '⇒')
       .replace(/\|=/g, '╞═')
-      .replace(/\|\-/g, '├─')
+      .replace(/\|-/g, '├─')
       .replace(/\|/g, '│')
       .replace(/\+=/g, '╒═')
       .replace(/-=/g, '╘═')

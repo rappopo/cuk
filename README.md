@@ -52,7 +52,7 @@ And enter the following content:
 ```js
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   return (name) => {
     console.log(name)
   }

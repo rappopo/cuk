@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const { _, globby, path, fs } = cuk.pkg.core.lib
   const merge = require('../merge')(cuk)
   const trace = require('../trace')(cuk)
@@ -13,12 +13,12 @@ module.exports = function(cuk) {
       const pattern = `${dir}/hook/*`
       const files = globby.sync(`${pattern}/*.js`, {
         ignore: [
-          `${pattern}/_*`,
+          `${pattern}/_*`
         ]
       })
       _.each(files, f => {
-        let parts = f.split(path.sep),
-          base = _.last(parts).replace('.js', '').split('_')
+        let parts = f.split(path.sep)
+        let base = _.last(parts).replace('.js', '').split('_')
         hooks.push({
           from: p.id,
           pkgId: base[0],
@@ -42,10 +42,9 @@ module.exports = function(cuk) {
       ext = '.js'
     } = options
     const exts = makeChoices(ext)
-    let ns = !!name ? `${pkgId}/${name}` : pkgId
-//    if (!name) createContainer = false
-    if (createAppDir)
-      fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
+    let ns = !_.isEmpty(name) ? `${pkgId}/${name}` : pkgId
+    // if (!name) createContainer = false
+    if (createAppDir) fs.ensureDirSync(path.join(cuk.dir.app, 'cuks', ns))
 
     const hooks = getHooks(ns)
     let hook = _.filter(hooks, { pkgId: 'parent', type: 'before' })
@@ -69,8 +68,9 @@ module.exports = function(cuk) {
       const pattern = deep ? '/**' : ''
       let ignore = [
         `${dir}/_*/**/*`,
-        `${dir}/hook/**/*`,
-      ], patterns = []
+        `${dir}/hook/**/*`
+      ]
+      let patterns = []
       _.each(exts, ext => {
         ignore.push(`${dir}${pattern}/_*${ext}`)
         patterns.push(`${dir}${pattern}/*${ext}`)
@@ -90,8 +90,8 @@ module.exports = function(cuk) {
           })
         }
         _.each(files, f => {
-          const ext = path.extname(f),
-            key = _.camelCase(f.replace(dir, '').replace(ext, ''))
+          const ext = path.extname(f)
+          const key = _.camelCase(f.replace(dir, '').replace(ext, ''))
           hook = _.filter(hooks, { pkgId: p.id, key: key, type: 'before' })
           if (hook.length > 0) {
             if (process.env.VERBOSE) trace('|  |  |---> hook:before')

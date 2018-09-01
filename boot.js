@@ -17,11 +17,10 @@ let cuk = {
   pkg: {}
 }
 
-module.exports = function(options) {
+module.exports = function (options = {}) {
+  options.dir = options.dir || {}
   const trace = require('./cuks/core/helper/trace')(cuk)
-  const merge = require('./cuks/core/helper/merge')(cuk)
-  const sortCollection = require('./cuks/core/helper/coll/sort_by')(cuk)
-  const bootPkg = require('./lib/boot_pkg')
+  if (options.dir) cuk.dir = options.dir
 
   return new Promise((resolve, reject) => {
     _.each(['config', 'tmp'], d => {
@@ -45,36 +44,36 @@ module.exports = function(options) {
     if (!process.env.DEBUG) process.stdout.write('\n 🍎 Loading packages...')
     trace('|= Loading core...')
     makePkg(cuk, require('./index')(cuk), __dirname, trace)
-    .then(pkg => {
-      cuk.pkg[pkg.id] = pkg
-      trace('|= Loading packages...')
-      let proms = [
-        makePkg(cuk, Promise.resolve({ id: 'app', level: 0}), cuk.dir.app, trace)
-      ]
-      _.each(dirs, d => {
-        const item = require(d)(cuk)
-        proms.push(makePkg(cuk, item, d, trace))
+      .then(pkg => {
+        cuk.pkg[pkg.id] = pkg
+        trace('|= Loading packages...')
+        let proms = [
+          makePkg(cuk, Promise.resolve({ id: 'app', level: 0 }), cuk.dir.app, trace)
+        ]
+        _.each(dirs, d => {
+          const item = require(d)(cuk)
+          proms.push(makePkg(cuk, item, d, trace))
+        })
+        return Promise.all(proms)
       })
-      return Promise.all(proms)
-    })
-    .then(pkgs => {
-      _.each(pkgs, p => {
-        cuk.pkg[p.id] = p
+      .then(pkgs => {
+        _.each(pkgs, p => {
+          cuk.pkg[p.id] = p
+        })
+        return require('./lib/load_helper')(cuk, trace)
       })
-      return require('./lib/load_helper')(cuk, trace)
-    })
-    .then(() => {
-      return require('./lib/load_config')(cuk, trace)
-    })
-    .then(() => {
-      if (!process.env.DEBUG) process.stdout.write(' + 🐍 Booting packages...')
-      return require('./lib/boot_pkg')(cuk, trace)
-    })
-    .then(() => {
-      if (!process.env.DEBUG) process.stdout.write(' = 😈 Completed, enjoy!\n')
-      trace('-= Completed, enjoy!')
-      if (!process.env.NOBANNER) console.log(
-`
+      .then(() => {
+        return require('./lib/load_config')(cuk, trace)
+      })
+      .then(() => {
+        if (!process.env.DEBUG) process.stdout.write(' + 🐍 Booting packages...')
+        return require('./lib/boot_pkg')(cuk, trace)
+      })
+      .then(() => {
+        if (!process.env.DEBUG) process.stdout.write(' = 😈 Completed, enjoy!\n')
+        trace('-= Completed, enjoy!')
+        if (!process.env.NOBANNER) {
+          console.log(`
    .----.-----.-----.-----.
   /      \\     \\     \\     \\
   |   /   |     |   __L_____L__      #NjancukiHargaMati!
@@ -88,7 +87,8 @@ module.exports = function(options) {
      |                 |             Project: https://github.com/rappopo/cuk
      |   Rappopo CUK   |             Twitter: @rappopoto
 `)
-      resolve(cuk)
-    }).catch(reject)
+        }
+        resolve(cuk)
+      }).catch(reject)
   })
 }

@@ -1,10 +1,11 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const { _, CukError } = cuk.pkg.core.lib
 
   return message => {
-    let msg, body = {}
+    let msg
+    let body = {}
     if (_.isError(message)) {
       msg = message.message
       if (message.details) body = _.cloneDeep(message.details)

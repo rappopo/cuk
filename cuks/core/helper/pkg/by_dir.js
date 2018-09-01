@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const pkgs = require('../pkgs')(cuk)
 
   return (dir) => {

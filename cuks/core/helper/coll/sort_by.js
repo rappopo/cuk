@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const _ = require('lodash')
 
   const filter = (coll, arr, field) => {

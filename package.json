@@ -4,10 +4,22 @@
   "description": "Core loaders, libraries & function helpers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "author": "Ardhi Lukianto <ardhi@lukianto.com>",
   "license": "MIT",
+  "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "expect"
+    ]
+  },
   "dependencies": {
     "@captemulation/get-parameter-names": "^1.2.0",
     "bluebird": "^3.5.1",
@@ -22,9 +34,5 @@
     "nanoid": "^1.0.3",
     "npm": "^6.2.0"
   },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
-    "chai-subset": "^1.6.0"
-  }
+  "devDependencies": {}
 }

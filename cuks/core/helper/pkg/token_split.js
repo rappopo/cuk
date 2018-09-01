@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(cuk) {
+module.exports = function (cuk) {
   const util = require('util')
   const getPkg = require('../pkg')(cuk)
 
