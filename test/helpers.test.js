@@ -35,14 +35,12 @@ describe('Helpers', function () {
 
     test('Should return empty object if folder doesn\'t exists', async () => {
       let cfg = await helper('core:configLoad')('./non-exists', 'config')
-      console.log(cfg)
       expect(cfg).toEqual({})
     })
 
-    /*
     test('Should return the value of config.json if file is missing', async () => {
       let value = require(dir + '/config.json')
-      let cfg = await helper('core:configLoad')(dir + '/cfg')
+      let cfg = await helper('core:configLoad')(dir)
       expect(cfg).toEqual(value)
     })
 
@@ -63,7 +61,6 @@ describe('Helpers', function () {
       let cfg = await helper('core:configLoad')(dir + '/cfg', 'config-dir1')
       expect(cfg).toEqual(value)
     })
-    */
   })
 
   /*

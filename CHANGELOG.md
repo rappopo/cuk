@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.0.5
+
+- Adding README.md, LICENSE.md & CHANGELOG.md
+- Complete additional infos in package.json
+
 ### 0.0.4
 
 - Code rewrite everywhere, too many to count
