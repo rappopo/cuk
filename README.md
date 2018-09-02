@@ -2,9 +2,11 @@
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ardhilukianto)
 
-[Rappopo CUK](https://docs.rappopo.com/cuk/) core loaders.
+[Rappopo CUK](https://docs.rappopo.com/cuk/) Core Loaders.
 
 It loads all installed packages, assign & merge all configs, and prepare all functions to become callable throughout all packages.
+
+> Please do not send pull request for now, API isn't stable yet! Any pull requests will be ignored & silently rejected!!
 
 ## Setup
 
