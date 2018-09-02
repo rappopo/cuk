@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.0.6
+
+- Fix on cuk directories on boot
+
 ### 0.0.5
 
 - Adding README.md, LICENSE.md & CHANGELOG.md

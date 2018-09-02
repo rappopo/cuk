@@ -20,7 +20,7 @@ let cuk = {
 module.exports = function (options = {}) {
   options.dir = options.dir || {}
   const trace = require('./cuks/core/helper/trace')(cuk)
-  if (options.dir) cuk.dir = options.dir
+  if (options.dir) cuk.dir = _.merge(cuk.dir, options.dir)
 
   return new Promise((resolve, reject) => {
     _.each(['config', 'tmp'], d => {
