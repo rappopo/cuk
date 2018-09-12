@@ -1,6 +1,6 @@
 {
   "name": "@rappopo/cuk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Rappopo CUK Framework Core Loaders",
   "main": "index.js",
   "scripts": {

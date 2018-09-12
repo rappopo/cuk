@@ -72,6 +72,7 @@ helper('mySecretFunction')('Hello!')
 
 ## Links
 
+* [Wiki](https://github.com/rappopo/cuk/wiki)
 * [Documentation](https://docs.rappopo.com/cuk/)
 * [Changelog](CHANGELOG.md)
 

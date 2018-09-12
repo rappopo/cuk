@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.0.7
+
+- Add helper: configExtend
+
 ### 0.0.6
 
 - Fix on cuk directories on boot
