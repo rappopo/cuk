@@ -30,13 +30,15 @@ module.exports = function (options = {}) {
       fs.ensureDirSync(path.join(cuk.dir.app, d))
     })
 
-    const dirs = globby.sync([
+    const pattern = [
       '**/node_modules/@rappopo/cuk-*',
       '**/node_modules/rcuk-*',
       '**/node_modules/*-rcuk-*',
       '**/node_modules/rappopo-cuk-*',
       '**/node_modules/*-rappopo-cuk-*'
-    ], {
+    ].concat(options.extPkgs || [])
+
+    const dirs = globby.sync(pattern, {
       onlyDirectories: true,
       absolute: true
     })
