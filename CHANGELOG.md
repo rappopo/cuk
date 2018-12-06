@@ -1,5 +1,13 @@
 ## Changelog
 
+### 0.0.10
+
+- Make package trace to behave like helper('core:trace')
+
+### 0.0.9
+
+- Bug fix on boot modules: cuks container should now merged correctly
+
 ### 0.0.7
 
 - Add helper: configExtend

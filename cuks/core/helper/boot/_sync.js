@@ -60,9 +60,8 @@ module.exports = function (cuk) {
 
     _.forOwn(cuk.pkg, (p, k) => {
       if (createContainer) {
-        p.cuks[pkgId] = name === '' ? {} : merge(p.cuks[pkgId], _.set({}, name, {}))
+        p.cuks[pkgId] = name === '' ? {} : merge(_.set({}, name, {}), p.cuks[pkgId])
       }
-
       let dir = path.join(p.dir, 'cuks', ns)
 
       const pattern = deep ? '/**' : ''

@@ -25,7 +25,7 @@ module.exports = function (cuk) {
       const all = pkgs()
       Promise.map(all, p => {
         if (createContainer) {
-          p.cuks[pkgId] = merge(p.cuks[pkgId], _.set({}, name, {}))
+          p.cuks[pkgId] = merge(_.set({}, name, {}), p.cuks[pkgId])
         }
         let dir = path.join(p.dir, 'cuks', ns)
 
