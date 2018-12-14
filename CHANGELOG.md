@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.0.11
+
+- Breaking change: config root no longer use common & cuks.
+
 ### 0.0.10
 
 - Make package trace to behave like helper('core:trace')

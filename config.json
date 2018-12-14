@@ -1,8 +1,6 @@
 {
-  "common": {
-    "bootOrder": [],
-    "bootExtPattern": []
-  },
+  "bootOrder": [],
+  "bootExtPattern": [],
   "cuks": {
     "task": {
       "clearTmpDir": {
