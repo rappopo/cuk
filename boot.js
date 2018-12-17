@@ -45,6 +45,7 @@ module.exports = function (options = {}) {
     trace('+= Starting...')
     if (!process.env.DEBUG) process.stdout.write('\n 🍎 Loading packages...')
     trace('|= Loading core...')
+
     makePkg(cuk, require('./index')(cuk), __dirname, trace)
       .then(pkg => {
         cuk.pkg[pkg.id] = pkg
@@ -62,6 +63,11 @@ module.exports = function (options = {}) {
         _.each(pkgs, p => {
           cuk.pkg[p.id] = p
         })
+        // injections...
+        cuk.pkg.core.lib.config = (pkg) => {
+          return _.get(cuk.pkg, pkg + '.cfg', {})
+        }
+
         return require('./lib/load_helper')(cuk, trace)
       })
       .then(() => {
