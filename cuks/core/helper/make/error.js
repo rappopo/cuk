@@ -11,7 +11,7 @@ module.exports = function (cuk) {
       if (message.details) body = _.cloneDeep(message.details)
       if (message.statusCode) body.statusCode = body
     } else if (_.isPlainObject(message)) {
-      msg = message.msg || 'Unknown error'
+      msg = message.msg || 'Unknown Error'
       body = _.omit(message, ['msg'])
       if (message.status) body.statusCode = message.status
     } else {
