@@ -63,11 +63,6 @@ module.exports = function (options = {}) {
         _.each(pkgs, p => {
           cuk.pkg[p.id] = p
         })
-        // injections...
-        cuk.pkg.core.lib.config = (pkg) => {
-          return _.get(cuk.pkg, pkg + '.cfg', {})
-        }
-
         return require('./lib/load_helper')(cuk, trace)
       })
       .then(() => {
