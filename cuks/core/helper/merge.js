@@ -3,8 +3,11 @@
 module.exports = function (cuk) {
   const _ = require('lodash')
 
-  return (source = {}, doc = {}) => {
+  return (source = {}, ...docs) => {
     let src = _.cloneDeep(source)
-    return _.merge(src, doc)
+    _.each(docs, d => {
+      src = _.merge(src, d)
+    })
+    return src
   }
 }
